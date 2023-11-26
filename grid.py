@@ -24,21 +24,18 @@ class LifeGrid:
                 # Walk thru each neighbor for this alive cell and increase touch count
                 num_neighbors[(row + drow), (col + dcol)] += 1
 
-        print(f'Num Neighbors: {num_neighbors.items()}')
 
         stay_alive = {
             # Cell needs to stay alive if it has 2 or more touches
             cell for cell, num in num_neighbors.items() if num in {2, 3}
         } & self.pattern.alive_cells # Only keep the cell alive if its already alive and meets criteria
 
-        print(f'Stay alive: {stay_alive}')
 
         come_alive = {
             # Cell needs to come alive if it has 3 touches
             cell for cell, num in num_neighbors.items() if num == 3
         } - self.pattern.alive_cells # Remove current alive cells so we only know new live cells
 
-        print(f'Come Alive: {come_alive}')
 
         #
         self.pattern.alive_cells = stay_alive | come_alive
@@ -50,7 +47,7 @@ class LifeGrid:
         display = [self.pattern.name.center(2 * (end_col - start_col), "+")]
         for row in range(start_row, end_row):
             display_row = [
-                # if row, col tuple is contained in the alive cells, insert ALIVE character
+                # if (row, col) tuple is contained in the alive cells, insert ALIVE character
                 ALIVE if (row, col) in self.pattern.alive_cells else DEAD
                 for col in range(start_col, end_col)
             ]
